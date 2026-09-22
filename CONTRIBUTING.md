@@ -25,11 +25,14 @@
 
 ## 本地检查
 
+需要 Python 3.9+。先安装开发依赖：
+
 ```bash
+python -m pip install -r requirements-dev.txt
 python scripts/validate.py .
 ```
 
-这个脚本检查 frontmatter、命名和必需文件。它不能验证行为；行为验证按 [evals/README.md](evals/README.md) 进行。
+这个脚本检查 frontmatter、命名和必需文件。它不能验证行为；行为验证按 [evals/README.md](evals/README.md) 进行。缺少 PyYAML 时，脚本会提示你运行上面的安装命令。
 
 如果本机安装了 Codex skill-creator，也可以额外运行：
 

@@ -12,7 +12,12 @@ import re
 import sys
 from pathlib import Path
 
-import yaml
+try:
+    import yaml
+except ImportError:
+    print("[FAIL] PyYAML is required to run this validator.")
+    print("Install dev dependencies: python -m pip install -r requirements-dev.txt")
+    raise SystemExit(1)
 
 MAX_NAME_LENGTH = 64
 MAX_DESCRIPTION_LENGTH = 1024

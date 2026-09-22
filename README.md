@@ -99,6 +99,17 @@ $book-section-synthesis 梳理这一小节。原文如下：……
 
 `scripts/validate.py` 只检查结构；行为需要通过前向测试验证。前向测试流程见 [evals/README.md](evals/README.md)。
 
+## 本地开发
+
+需要 Python 3.9+。先安装开发依赖，再运行结构校验：
+
+```bash
+python -m pip install -r requirements-dev.txt
+python scripts/validate.py .
+```
+
+`requirements-dev.txt` 当前只声明 PyYAML；校验脚本在缺少它时会给出安装提示。
+
 ## 仓库结构
 
 ```text
@@ -120,6 +131,7 @@ book-section-synthesis/
 │   └── fixtures/
 ├── scripts/
 │   └── validate.py
+├── requirements-dev.txt
 └── .github/workflows/validate.yml
 ```
 

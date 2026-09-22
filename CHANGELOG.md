@@ -2,6 +2,18 @@
 
 本项目遵循语义化版本。
 
+## [Unreleased]
+
+### Added
+
+- `requirements-dev.txt`，声明本地结构校验所需的 PyYAML。
+- `scripts/validate.py` 在缺少 PyYAML 时给出明确的安装提示。
+
+### Changed
+
+- CI 改为从 `requirements-dev.txt` 安装开发依赖。
+- README 与 CONTRIBUTING 增加本地开发环境说明。
+
 ## [2.0.0] - 2026-09-22
 
 ### Added
