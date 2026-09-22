@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Structural validation for the book-section-synthesis skill.
+"""Structural validation for the book-section-synthesis repository.
 
-This is intentionally narrow: it checks frontmatter, naming, required
-references, and the Codex UI metadata. It does not validate behavior.
-Behavior is covered by evals/README.md and evals/rubric.md.
+Checks repository-level files at the root and the installable skill in
+skill/book-section-synthesis/. It does not validate behavior; behavior is
+covered by evals/README.md and evals/rubric.md.
 """
 
 from __future__ import annotations
@@ -22,22 +22,26 @@ except ImportError:
 MAX_NAME_LENGTH = 64
 MAX_DESCRIPTION_LENGTH = 1024
 ALLOWED_FRONTMATTER = {"name", "description", "license", "allowed-tools", "metadata"}
+SKILL_SUBDIR = Path("skill") / "book-section-synthesis"
 
-REQUIRED_FILES = (
-    "SKILL.md",
+REQUIRED_REPO_FILES = (
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "LICENSE",
     "QUICK_PROMPTS.md",
     "requirements-dev.txt",
+    "evals/README.md",
+    "evals/rubric.md",
+    "evals/fixtures/cases.md",
+)
+
+REQUIRED_SKILL_FILES = (
+    "SKILL.md",
     "agents/openai.yaml",
     "references/text-types.md",
     "references/fidelity.md",
     "templates/section-note.md",
-    "evals/README.md",
-    "evals/rubric.md",
-    "evals/fixtures/cases.md",
 )
 
 
@@ -62,15 +66,24 @@ def read_frontmatter(skill_md: Path) -> dict:
     return data
 
 
-def validate(skill_dir: Path) -> list[str]:
+def validate(repo_dir: Path) -> list[str]:
     errors: list[str] = []
 
-    if not skill_dir.is_dir():
-        return [f"not a directory: {skill_dir}"]
+    if not repo_dir.is_dir():
+        return [f"not a directory: {repo_dir}"]
 
-    for relative in REQUIRED_FILES:
+    for relative in REQUIRED_REPO_FILES:
+        if not (repo_dir / relative).is_file():
+            errors.append(f"missing required repository file: {relative}")
+
+    skill_dir = repo_dir / SKILL_SUBDIR
+    if not skill_dir.is_dir():
+        errors.append(f"missing skill directory: {SKILL_SUBDIR}")
+        return errors
+
+    for relative in REQUIRED_SKILL_FILES:
         if not (skill_dir / relative).is_file():
-            errors.append(f"missing required file: {relative}")
+            errors.append(f"missing required skill file: {SKILL_SUBDIR / relative}")
 
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.is_file():
@@ -97,10 +110,12 @@ def validate(skill_dir: Path) -> list[str]:
         if name.startswith("-") or name.endswith("-") or "--" in name:
             errors.append("frontmatter.name cannot start/end with '-' or contain '--'")
         if len(name) > MAX_NAME_LENGTH:
-            errors.append(f"frontmatter.name is longer than {MAX_NAME_LENGTH} characters")
+            errors.append(
+                f"frontmatter.name is longer than {MAX_NAME_LENGTH} characters"
+            )
         if name != skill_dir.name:
             errors.append(
-                f"frontmatter.name ({name}) must match the folder name ({skill_dir.name})"
+                f"frontmatter.name ({name}) must match the skill folder name ({skill_dir.name})"
             )
 
     description = frontmatter.get("description")
@@ -147,18 +162,18 @@ def validate(skill_dir: Path) -> list[str]:
 
 def main() -> int:
     if len(sys.argv) != 2:
-        print("Usage: python scripts/validate.py <skill-directory>")
+        print("Usage: python scripts/validate.py <repository-directory>")
         return 1
 
-    skill_dir = Path(sys.argv[1]).resolve()
-    errors = validate(skill_dir)
+    repo_dir = Path(sys.argv[1]).resolve()
+    errors = validate(repo_dir)
 
     if errors:
         for error in errors:
             fail(error)
         return 1
 
-    ok(f"skill structure is valid: {skill_dir}")
+    ok(f"repository and skill structure is valid: {repo_dir}")
     return 0
 
 

@@ -54,7 +54,7 @@ $book-section-synthesis 输出可以直接插入 Obsidian 笔记的 Markdown 段
 ## 8. 固定结构笔记（使用模板）
 
 ```text
-$book-section-synthesis 按 templates/section-note.md 的结构输出：边界说明、4–8 段正文、术语注、保真说明。原文如下：
+$book-section-synthesis 按 skill 自带的 templates/section-note.md 结构输出：边界说明、4–8 段正文、术语注、保真说明。原文如下：
 <粘贴原文>
 ```
 

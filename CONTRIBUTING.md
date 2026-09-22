@@ -2,9 +2,14 @@
 
 感谢参与。这个项目的核心质量目标是**可预测**：不同模型、不同用户、不同小节，应该走出同一套可靠流程。
 
+## 仓库布局
+
+- `skill/book-section-synthesis/`：真正安装到 Codex 的运行文件（`SKILL.md`、`agents/`、`references/`、`templates/`）。
+- 根目录的 `README.md`、`QUICK_PROMPTS.md`、`evals/`、`scripts/`、`.github/`：仓库文档、评测和开发工具。
+
 ## 行为变更
 
-- 修改 `SKILL.md` 中会影响输出的规则时，必须在 `evals/fixtures/cases.md` 增加或更新一个对应用例。
+- 修改 `skill/book-section-synthesis/SKILL.md` 中会影响输出的规则时，必须在 `evals/fixtures/cases.md` 增加或更新一个对应用例。
 - 如果改变了评分标准，同步更新 `evals/rubric.md`。
 - 在 Pull Request 中说明：改了什么行为、为什么旧行为不够好、用哪个模型和版本验证过。
 - 不要只改措辞而不说明行为影响。评审关注行为不变量，不关注句子是否“更漂亮”。
@@ -17,7 +22,7 @@
 
 ## 写作约定
 
-- `SKILL.md` 保持精简；类型细节、示例和错误对照放到 `references/`。
+- `skill/book-section-synthesis/SKILL.md` 保持精简；类型细节、示例和错误对照放到 `skill/book-section-synthesis/references/`。
 - 默认中文写作；术语保留原文，不强行给英文对应词。
 - 规则要可检查：写“4–8 个正文自然段”，不要写“篇幅适中”。
 - 一个规则只在一个地方定义；引用时用链接，不要复制整段。

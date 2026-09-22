@@ -2,6 +2,16 @@
 
 本项目遵循语义化版本。
 
+## [2.2.0] - 2026-09-22
+
+### Changed
+
+- 仓库重排为“根目录文档 + `skill/book-section-synthesis/` 运行文件”。
+- 安装方式改为目录 URL：`$skill-installer install https://github.com/liujieranjerry-lgtm/book-section-synthesis/tree/main/skill/book-section-synthesis`。
+- 官方安装器、`npx skills`、手动安装、验证/更新说明同步更新。
+- `scripts/validate.py` 改为同时校验根目录文件和 `skill/` 子目录。
+- `SKILL.md` 版本改为 2.2.0。
+
 ## [2.1.0] - 2026-09-22
 
 ### Added

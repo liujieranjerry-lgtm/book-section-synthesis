@@ -6,7 +6,7 @@
 
 **用户请求**：梳理这一小节，不要照本宣科。
 
-**提供的材料**：`references/examples/synthetic-input.md` 中的 3.4，以及明确的版本说明“合成材料，第一版”。
+**提供的材料**：`skill/book-section-synthesis/references/examples/synthetic-input.md` 中的 3.4，以及明确的版本说明“合成材料，第一版”。
 
 **预期行为**：确认边界；按论证型骨架梳理；4–8 个正文自然段；指出例子与主张之间的推理关系；不包含 3.5。
 
@@ -86,7 +86,7 @@
 
 **用户请求**：梳理这一节，短一点，不用太长。
 
-**提供的材料**：`references/examples/synthetic-input.md` 中的 3.4。
+**提供的材料**：`skill/book-section-synthesis/references/examples/synthetic-input.md` 中的 3.4。
 
 **预期行为**：切换到紧凑模式，输出 2–4 个正文自然段；保留核心推进；不因为压缩而丢掉“指标与目标的区分”“例子与主张的关系”“多指标只能缓解”的关键环节。
 
