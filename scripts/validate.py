@@ -25,9 +25,17 @@ ALLOWED_FRONTMATTER = {"name", "description", "license", "allowed-tools", "metad
 
 REQUIRED_FILES = (
     "SKILL.md",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "QUICK_PROMPTS.md",
+    "requirements-dev.txt",
+    "agents/openai.yaml",
     "references/text-types.md",
     "references/fidelity.md",
-    "agents/openai.yaml",
+    "templates/section-note.md",
+    "evals/README.md",
     "evals/rubric.md",
     "evals/fixtures/cases.md",
 )

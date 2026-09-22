@@ -2,12 +2,16 @@
 
 本项目遵循语义化版本。
 
-## [Unreleased]
+## [2.1.0] - 2026-09-22
 
 ### Added
 
 - `requirements-dev.txt`，声明本地结构校验所需的 PyYAML。
 - `scripts/validate.py` 在缺少 PyYAML 时给出明确的安装提示。
+- `QUICK_PROMPTS.md`，按场景提供可直接复制的提示词。
+- `templates/section-note.md`，固定边界说明、正文、术语注和保真说明的笔记骨架。
+- `references/fidelity.md` 增加 Claim—Evidence—Verdict 表。
+- README 增加评测覆盖与验证状态。
 
 ### Changed
 
@@ -16,6 +20,9 @@
 - README 安装章节改为可直接执行的 `gh repo clone` / `git clone`、更新、卸载和验证命令。
 - README 重写为产品化结构：快速开始、效果示例、适合与不适合、工作流、安装、FAQ、限制与路线图。
 - 仓库转为 public；README 安装说明改为公开仓库版本，并补充 Python / npm / git 三种安装方式的区别；`--method git` 作为更稳定的安装方式保留。
+- README 收紧到约 300 行，提示词移到 `QUICK_PROMPTS.md`，安装命令去重。
+- `scripts/validate.py` 必需文件列表更新。
+- `SKILL.md` 版本改为 2.1.0，并在固定结构笔记场景引用 `templates/section-note.md`。
 
 ## [2.0.0] - 2026-09-22
 

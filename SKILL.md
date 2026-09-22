@@ -3,7 +3,7 @@ name: book-section-synthesis
 description: 把用户提供的教材或学术著作小节重写为中文“脉络梳理”：重建结构主线、解释必要术语与引用、显式化隐含推理，并保持原文忠实。仅在用户能提供该小节原文、且可确定版本与边界时使用；适用于“梳理这一节/把逻辑讲清楚/不要照本宣科”。不用于整章总结、文献综述、翻译、论文写作，也不得在缺少原文时凭记忆复述。
 license: MIT
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # 课本小节梳理
@@ -121,7 +121,7 @@ metadata:
 - **外部背景**：如果为了理解必须补充外部知识，单独标为“补充背景（非本小节原文）”。能核实的注明来源；不能核实的说明不确定性，不要混入原文主张。
 - **区分作者原话与你的诠释**：作者的主张用陈述句写；你的解释用“可以理解为”“这里的意思很可能是”标记。
 
-补充陈述的分类、引用规则和错误处理细节见 [references/fidelity.md](references/fidelity.md)。当你准备加入外部背景、判断原文是否有误，或不确定某句话算原文主张还是推断时，读取该文件。
+补充陈述的分类、引用规则、Claim—Evidence—Verdict 表和错误处理细节见 [references/fidelity.md](references/fidelity.md)。当你准备加入外部背景、判断原文是否有误、做保真审计，或不确定某句话算原文主张还是推断时，读取该文件。
 
 ### 5. 文本审校（C 模式）
 
@@ -154,6 +154,7 @@ metadata:
 
 - 原文确实极短时，可以低于 4 段；在边界说明中说明原因，不注水凑数。
 - 用户要求“可直接插入笔记”时，输出自包含的 Markdown 段落，不加对话性前言或后记；边界说明和补充说明用引用块或小注，避免打断正文。
+- 用户要求固定结构或文件化笔记时，读取 [templates/section-note.md](templates/section-note.md) 作为骨架；不要改变其中的保真要求。
 - 默认用中文写作；用户指定其他语言时按要求执行。
 - 默认用自然段落。只有原文本身是分类或流程结构，且用户要求结构化输出时，才使用少量列表。
 
@@ -176,5 +177,6 @@ metadata:
 
 - [references/text-types.md](references/text-types.md)：类型判定、各类型骨架、混合类型与特殊文本的处理。
 - [references/fidelity.md](references/fidelity.md)：陈述分类、引用规则、读者校准、错误分类与保真台账模板。
+- [templates/section-note.md](templates/section-note.md)：固定笔记骨架；用户要求固定结构或文件化笔记时使用。
 - [references/examples/expected-output.md](references/examples/expected-output.md)：完整输入—输出示例；首次生成或不确定段落节奏时读取。
 - [references/examples/anti-example.md](references/examples/anti-example.md)：常见错误对照；自查时读取。
