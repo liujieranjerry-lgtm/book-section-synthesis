@@ -17,13 +17,73 @@
 
 ## 安装
 
+### 前置条件
+
+需要 `git`。当前仓库是私有的，所以还需要 GitHub CLI 并完成登录：
+
+```bash
+brew install gh
+gh auth login
+gh auth setup-git
+```
+
+非 macOS 请用对应包管理器安装 `gh`，例如 `sudo apt install gh` 或 `winget install GitHub.cli`。
+
+仓库改成公开后，可以只用 `git clone`，不需要 `gh`。
+
 ### Codex
 
-把 `book-section-synthesis/` 放进 `$CODEX_HOME/skills/`（未设置 `CODEX_HOME` 时通常是 `~/.codex/skills/`）。也可以用 skill-installer 从 GitHub 仓库安装。
+私有仓库：克隆到 Codex skills 目录。
+
+```bash
+SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
+mkdir -p "$(dirname "$SKILL_DIR")"
+gh repo clone liujieranjerry-lgtm/book-section-synthesis "$SKILL_DIR"
+```
+
+仓库公开后，改用：
+
+```bash
+SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
+mkdir -p "$(dirname "$SKILL_DIR")"
+git clone https://github.com/liujieranjerry-lgtm/book-section-synthesis.git "$SKILL_DIR"
+```
+
+验证安装：
+
+```bash
+test -f "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis/SKILL.md" && echo "installed"
+```
+
+更新到最新版本：
+
+```bash
+git -C "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis" pull --ff-only
+```
+
+卸载：
+
+```bash
+rm -rf "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
+```
 
 ### 其他支持 SKILL.md 的 agent
 
-把整个目录复制到对应 agent 的 skills 目录即可。`agents/openai.yaml` 是 Codex 的界面元数据，其他宿主可以忽略；核心行为定义在 `SKILL.md` 和 `references/` 中。
+把仓库克隆到对应 agent 的 skills 目录。例如 Claude Code：
+
+```bash
+SKILL_DIR="$HOME/.claude/skills/book-section-synthesis"
+mkdir -p "$(dirname "$SKILL_DIR")"
+gh repo clone liujieranjerry-lgtm/book-section-synthesis "$SKILL_DIR"
+```
+
+通用形式：
+
+```bash
+gh repo clone liujieranjerry-lgtm/book-section-synthesis "/path/to/your/skills/book-section-synthesis"
+```
+
+`agents/openai.yaml` 是 Codex 的界面元数据，其他宿主可以忽略；核心行为定义在 `SKILL.md` 和 `references/` 中。
 
 ## 使用
 

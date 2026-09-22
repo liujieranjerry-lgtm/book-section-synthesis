@@ -13,6 +13,7 @@
 
 - CI 改为从 `requirements-dev.txt` 安装开发依赖。
 - README 与 CONTRIBUTING 增加本地开发环境说明。
+- README 安装章节改为可直接执行的 `gh repo clone` / `git clone`、更新、卸载和验证命令。
 
 ## [2.0.0] - 2026-09-22
 
