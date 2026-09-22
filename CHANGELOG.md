@@ -2,6 +2,19 @@
 
 本项目遵循语义化版本。
 
+## [Unreleased]
+
+### Added
+
+- `scripts/check_links.py`，检查 Markdown 本地链接。
+- `.github/dependabot.yml`，每周检查 GitHub Actions 更新。
+
+### Changed
+
+- CI 升级到 `actions/checkout@v7` 和 `actions/setup-python@v7`，增加链接检查步骤和并发取消。
+- `scripts/validate.py` 必需文件列表加入 `scripts/check_links.py`。
+- CONTRIBUTING 与 README 的本地校验说明同步更新。
+
 ## [2.2.0] - 2026-09-22
 
 ### Changed

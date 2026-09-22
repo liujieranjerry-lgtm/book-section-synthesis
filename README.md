@@ -247,12 +247,13 @@ book-section-synthesis/
 ├── QUICK_PROMPTS.md             # 可直接复制的提示词
 ├── evals/                       # 行为评测用例与评分表
 ├── scripts/
-│   └── validate.py              # 结构校验
+│   ├── validate.py              # 结构校验
+│   └── check_links.py           # 本地 Markdown 链接检查
 ├── requirements-dev.txt         # 开发依赖
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── LICENSE
-├── .github/                     # CI 与 PR 模板
+├── .github/                     # CI、Dependabot 与 PR 模板
 └── skill/
     └── book-section-synthesis/  # 真正安装到 Codex 的 skill
         ├── SKILL.md             # 模型执行入口
@@ -327,9 +328,10 @@ book-section-synthesis/
 ```bash
 python -m pip install -r requirements-dev.txt
 python scripts/validate.py .
+python scripts/check_links.py .
 ```
 
-行为变更必须同步更新 `evals/fixtures/cases.md` 或新增 fixture。不要提交受版权保护的教材节选。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+CI 运行这两个脚本；它们只检查结构和链接，不验证行为。行为变更必须同步更新 `evals/fixtures/cases.md` 或新增 fixture。不要提交受版权保护的教材节选。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ---
 

@@ -31,6 +31,7 @@ REQUIRED_REPO_FILES = (
     "LICENSE",
     "QUICK_PROMPTS.md",
     "requirements-dev.txt",
+    "scripts/check_links.py",
     "evals/README.md",
     "evals/rubric.md",
     "evals/fixtures/cases.md",

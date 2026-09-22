@@ -35,9 +35,10 @@
 ```bash
 python -m pip install -r requirements-dev.txt
 python scripts/validate.py .
+python scripts/check_links.py .
 ```
 
-这个脚本检查 frontmatter、命名和必需文件。它不能验证行为；行为验证按 [evals/README.md](evals/README.md) 进行。缺少 PyYAML 时，脚本会提示你运行上面的安装命令。
+这两个脚本只检查结构、命名和本地 Markdown 链接，不验证行为；行为验证按 [evals/README.md](evals/README.md) 进行。缺少 PyYAML 时，脚本会提示你运行上面的安装命令。
 
 如果本机安装了 Codex skill-creator，也可以额外运行：
 
@@ -50,5 +51,6 @@ python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .
 - [ ] 行为变更配有 fixture。
 - [ ] 评分表已同步更新（如有需要）。
 - [ ] `python scripts/validate.py .` 通过。
+- [ ] `python scripts/check_links.py .` 通过。
 - [ ] 没有提交受版权保护或私密的材料。
 - [ ] 记录了验证所用的模型、版本和日期。
