@@ -44,7 +44,7 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --method git
 ```
 
-安装后重启 Codex。如果仓库还是私有的，命令里需要 `--method git`；仓库公开后可以去掉这个参数。
+安装后重启 Codex。当前命令用 `--method git` 强制走 git clone，适合网络环境对 GitHub 下载端点有限制的情况；公开仓库也可以去掉这个参数，但部分代理/SSL 环境下可能失败。
 
 ### 2. 使用
 
@@ -222,16 +222,26 @@ $book-section-synthesis 输出可以直接插入 Obsidian 笔记的 Markdown 段
 
 ## 安装
 
+三种方式：
+
+| 方式 | 适合 | 需要 |
+|---|---|---|
+| Codex 官方 `skill-installer`（Python 脚本） | Codex App / CLI | Python 3.9+ |
+| `npx skills add` | Claude Code、Cursor、Cline 等跨 agent | Node.js |
+| `git clone` / `gh repo clone` | 手动安装、离线使用 | git；`gh` 可选 |
+
 ### 前置条件
 
 - Codex App 或 Codex CLI，且支持 skills；
-- Python 3.9+（用于官方 `skill-installer` 脚本）；
-- 如果仓库还是私有的，需要先完成 GitHub 登录：
+- 用官方 `skill-installer` 时需要 Python 3.9+；
+- 用 `npx skills` 时需要 Node.js；
+- 公开仓库用 `git clone` 即可，不需要登录。
+
+可选：安装 GitHub CLI（用于 `gh repo clone`、提交 issue 或 PR）：
 
 ```bash
 brew install gh
 gh auth login
-gh auth setup-git
 ```
 
 非 macOS 请用对应包管理器安装 `gh`，例如 `sudo apt install gh` 或 `winget install GitHub.cli`。
@@ -246,7 +256,7 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --method git
 ```
 
-安装后重启 Codex。
+安装后重启 Codex。当前命令用 `--method git` 强制走 git clone，适合网络环境对 GitHub 下载端点有限制的情况；公开仓库也可以去掉这个参数，但部分代理/SSL 环境下可能失败。
 
 ### 跨 agent：npx skills
 
@@ -265,15 +275,13 @@ Codex：
 ```bash
 SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
 mkdir -p "$(dirname "$SKILL_DIR")"
-gh repo clone liujieranjerry-lgtm/book-section-synthesis "$SKILL_DIR"
+git clone https://github.com/liujieranjerry-lgtm/book-section-synthesis.git "$SKILL_DIR"
 ```
 
-仓库公开后，可以改用：
+如果你已经安装并登录了 GitHub CLI，也可以把 `git clone ...` 换成：
 
 ```bash
-SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
-mkdir -p "$(dirname "$SKILL_DIR")"
-git clone https://github.com/liujieranjerry-lgtm/book-section-synthesis.git "$SKILL_DIR"
+gh repo clone liujieranjerry-lgtm/book-section-synthesis "$SKILL_DIR"
 ```
 
 其他 agent：
@@ -281,7 +289,7 @@ git clone https://github.com/liujieranjerry-lgtm/book-section-synthesis.git "$SK
 ```bash
 SKILL_DIR="$HOME/.claude/skills/book-section-synthesis"
 mkdir -p "$(dirname "$SKILL_DIR")"
-gh repo clone liujieranjerry-lgtm/book-section-synthesis "$SKILL_DIR"
+git clone https://github.com/liujieranjerry-lgtm/book-section-synthesis.git "$SKILL_DIR"
 ```
 
 具体 skills 目录以对应 agent 的文档为准。
@@ -289,7 +297,7 @@ gh repo clone liujieranjerry-lgtm/book-section-synthesis "$SKILL_DIR"
 通用形式：
 
 ```bash
-gh repo clone liujieranjerry-lgtm/book-section-synthesis "/path/to/your/skills/book-section-synthesis"
+git clone https://github.com/liujieranjerry-lgtm/book-section-synthesis.git "/path/to/your/skills/book-section-synthesis"
 ```
 
 ### 验证、更新、卸载
@@ -366,6 +374,10 @@ book-section-synthesis/
 **支持 Claude Code 或其他 agent 吗？**
 
 支持。把仓库克隆到对应 agent 的 skills 目录即可；`agents/openai.yaml` 是 Codex 的可选界面元数据。
+
+**为什么安装命令是 Python，而不是 npm？**
+
+因为 Codex 自带的官方安装器是一个 Python 脚本，负责把 skill 放进 `$CODEX_HOME/skills`；这不是在安装 Python 包，也不需要额外依赖。跨 agent 可以用 `npx skills add ...`，它需要 Node.js；也可以直接 `git clone`。这个 skill 本身没有构建步骤，也不是 npm 包。
 
 **默认输出多长？**
 
