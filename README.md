@@ -44,7 +44,7 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --method git
 ```
 
-安装后重启 Codex。当前命令用 `--method git` 强制走 git clone，适合网络环境对 GitHub 下载端点有限制的情况；公开仓库也可以去掉这个参数，但部分代理/SSL 环境下可能失败。
+安装后重启 Codex。
 
 ### 2. 使用
 
@@ -256,7 +256,7 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --method git
 ```
 
-安装后重启 Codex。当前命令用 `--method git` 强制走 git clone，适合网络环境对 GitHub 下载端点有限制的情况；公开仓库也可以去掉这个参数，但部分代理/SSL 环境下可能失败。
+安装后重启 Codex。
 
 ### 跨 agent：npx skills
 
@@ -377,7 +377,7 @@ book-section-synthesis/
 
 **为什么安装命令是 Python，而不是 npm？**
 
-因为 Codex 自带的官方安装器是一个 Python 脚本，负责把 skill 放进 `$CODEX_HOME/skills`；这不是在安装 Python 包，也不需要额外依赖。跨 agent 可以用 `npx skills add ...`，它需要 Node.js；也可以直接 `git clone`。这个 skill 本身没有构建步骤，也不是 npm 包。
+因为 Codex 自带的官方安装器是一个 Python 脚本，负责把 skill 放进 `$CODEX_HOME/skills`；这不是在安装 Python 包，也不需要额外依赖。跨 agent 可以用 `npx skills add ...`，它需要 Node.js；也可以直接 `git clone`。这个 skill 本身没有构建步骤，也不是 npm 包。`--method git` 只是让安装器用 git clone，不是 Python 要求。
 
 **默认输出多长？**
 
