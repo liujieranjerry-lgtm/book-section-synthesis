@@ -1,25 +1,232 @@
 # book-section-synthesis
 
-把用户提供的教材或学术著作小节，重写成一份不照抄原文、不曲解原文、逻辑连贯的中文“脉络梳理”。
+> 把教材或学术著作中的指定小节，重写成一份忠于原文、逻辑连贯、可以直接放进笔记的中文“脉络梳理”。
 
-它不是摘要，不是逐句翻译，不是要点列表；它用自然段落重建这一小节的结构与推进，并明确区分原文主张、直接引用、隐含推理和外部补充。
+![version](https://img.shields.io/badge/version-2.0.0-blue)
+![license](https://img.shields.io/badge/license-MIT-green)
+![Codex Skill](https://img.shields.io/badge/Codex-Skill-10a37f)
+![language](https://img.shields.io/badge/language-中文-red)
 
-## 硬性前提：必须提供原文
+它不是摘要，不是逐句翻译，不是要点列表，也不是整章总结。它用自然段落重建这一小节的结构与推进，并把原文主张、直接引用、隐含推理和外部补充分开。
 
-这个 skill 不会在缺少原文时凭书名、目录、模型记忆或二手介绍代写。如果没有原文，它会明确告诉用户无法做忠实梳理，并请用户提供原文。原文可以是：
+**硬性要求：必须提供原文。** 没有原文时，它会先要求你提供原文，不会凭书名、目录或模型记忆代写。
 
-- 直接粘贴的文字；
-- PDF、Word、文本文件等可读取文件；
-- 扫描件或页面照片（需要 OCR 或可辨认的清晰度）；
-- 用户明确指认的可读取位置。
+## 目录
 
-版本、译者、页码所属的版次也需要确认；不同版次的页码不能直接互推。
+- [30 秒开始](#30-秒开始)
+- [它解决什么问题](#它解决什么问题)
+- [效果示例](#效果示例)
+- [适合与不适合](#适合与不适合)
+- [怎么用](#怎么用)
+- [它会产出什么](#它会产出什么)
+- [它怎么工作](#它怎么工作)
+- [和普通摘要的区别](#和普通摘要的区别)
+- [安装](#安装)
+- [仓库结构](#仓库结构)
+- [FAQ](#faq)
+- [限制与路线图](#限制与路线图)
+- [开发与贡献](#开发与贡献)
+- [License](#license)
+
+---
+
+## 30 秒开始
+
+### 1. 安装
+
+Codex 推荐用官方 `skill-installer`：
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo liujieranjerry-lgtm/book-section-synthesis \
+  --path . \
+  --name book-section-synthesis \
+  --method git
+```
+
+安装后重启 Codex。如果仓库还是私有的，命令里需要 `--method git`；仓库公开后可以去掉这个参数。
+
+### 2. 使用
+
+```text
+$book-section-synthesis 梳理 3.4 这一节，不要照本宣科。原文如下：
+<粘贴原文>
+```
+
+它会先确认三件事：
+
+1. 原文是否可得；
+2. 版本和边界是否明确；
+3. 你希望按什么知识基础解释：零基础 / 学过相关课程 / 本专业读者。
+
+如果原文缺失，它只会要求你提供原文，不会先写一段猜测。
+
+---
+
+## 它解决什么问题
+
+普通 AI 摘要常见三个问题：
+
+- **压缩成要点，丢掉论证**：信息还在，但“为什么这样推进”没了。
+- **没有原文也敢写**：看起来像在梳理，实际在凭记忆复述。
+- **把作者的主张和模型的解释混在一起**：读者分不清哪句来自原文，哪句是推断。
+
+这个 skill 的约束正好相反：
+
+- 没有原文，不写；
+- 先判断小节类型，再选择结构骨架；
+- 原文主张、直接引用、隐含推理、外部补充分开；
+- 默认输出 4–8 个自然段，不写成要点清单。
+
+---
+
+## 效果示例
+
+> 示例是合成材料，不是任何真实教材的节选。完整输入和输出见 [references/examples/expected-output.md](references/examples/expected-output.md)。
+
+### 输入（节选）
+
+<details>
+<summary>3.4 度量为什么会改变被度量的对象</summary>
+
+> 很多人把度量想成一面镜子：只要方法正确，它就能如实反映对象。但在组织环境中，度量往往会反过来改变对象。原因不在于测量仪器有误差，而在于人会根据度量调整行为。
+>
+> 假设一家医院用“急诊等待时间”考核科室。等待时间定义为患者从挂号到见到医生的时长。这个指标看起来直接对应“患者是否及时得到救治”。但科室很快发现，只要让患者在救护车里等待，就不计入统计；于是等待时间下降了，患者实际获得救治的时间却没有改善。
+
+</details>
+
+### 输出（节选）
+
+> 这一节要回答的问题是：为什么度量会反过来改变被度量的对象。常见的想法是把度量看成一面看似中立的镜子，只要方法正确，数字就能如实反映对象；作者要反驳的正是这种想法。他的主张不是“测量有误差”，而是：在组织环境中，人会根据度量调整行为，因此度量会进入被度量的系统，改变它原本想反映的东西。
+>
+> 这个主张的关键在于区分“指标”与“指标想代表的目标”。指标是一个可计算的代理量，目标才是组织真正关心的事情；当两者被混为一谈时，人们就可能去优化代理量，而不是目标本身。作者用医院考核急诊等待时间的例子说明这一点：等待时间只统计从挂号到见到医生的时长，于是让患者在救护车里等待就可以压低数字，但患者得到救治的时间并没有改善。可以理解为，这个例子之所以能支持作者的主张，是因为它展示了“指标下降”和“目标改善”可以分离；一旦分离，度量就不再是镜子，而变成了被考核者要应对的任务。
+
+[查看完整输出（4–8 段 + 术语注 + 边界说明）→](references/examples/expected-output.md)
+
+---
+
+## 适合与不适合
+
+**适合**：
+
+- 正在读教材、教科书或学术著作，需要把某一节讲清楚的人；
+- 需要把阅读内容整理成笔记、讲义或知识库条目的人；
+- 需要区分“作者原话”和“我的理解”的人；
+- 需要解释术语、引用、图表、公式或隐含推理的人；
+- 需要回答“这一节到底怎么推进”的人。
+
+**不适合**：
+
+- 只想要一段摘要或要点列表；
+- 想做整章总结或整本书总结；
+- 想做文献综述、论文写作或逐句翻译；
+- 没有原文，想让模型凭记忆复述；
+- 想让模型在没有外部证据的情况下判定作者事实错误。
+
+---
+
+## 怎么用
+
+**标准梳理**
+
+```text
+$book-section-synthesis 梳理 3.4 这一节，不要照本宣科。原文如下：
+<粘贴原文>
+```
+
+**短版：2–4 段**
+
+```text
+$book-section-synthesis 梳理这一节，短一点，2–4 段。原文如下：
+<粘贴原文>
+```
+
+**指定知识基础**
+
+```text
+$book-section-synthesis 我是零基础，请把关键术语解释清楚。原文如下：
+<粘贴原文>
+```
+
+**检查译文或指代**
+
+```text
+$book-section-synthesis 这一节的“前者/后者”是不是指错了？原文如下：
+<粘贴原文>
+```
+
+**直接插入笔记**
+
+```text
+$book-section-synthesis 输出可以直接插入 Obsidian 笔记的 Markdown 段落。原文如下：
+<粘贴原文>
+```
+
+---
+
+## 它会产出什么
+
+默认输出：
+
+1. **边界说明**（一句话，仅在需要时；不计入正文段落数）
+2. **正文**：默认 4–8 个自然段
+3. **术语注**（可选；术语较多或你要求时）
+4. **补充说明**（可选；外部背景、未能核实的内容、原文本身的问题）
+
+篇幅模式：
+
+| 模式 | 段落数 | 何时使用 |
+|---|---|---|
+| 标准（默认） | 4–8 个正文自然段 | 一般请求 |
+| 紧凑 | 2–4 段 | 你说“短一点”“不用太长” |
+| 详版 | 可超过 8 段 | 你明确要求“详细/完整”，或原文包含多个必须展开的并列结构 |
+
+三种模式：
+
+| 模式 | 用途 | 对外部知识的态度 |
+|---|---|---|
+| A. 忠实梳理（默认） | 重建原文结构与推进 | 不加入外部背景 |
+| B. 讲解增强 | 在 A 的基础上补充背景、著作说明或思想谱系 | 外部内容必须标为“补充背景（非本小节原文）” |
+| C. 文本审校 | 回答“这里是不是说错了”“前后是否矛盾” | 内部矛盾可直接判断；事实争议需要外部证据 |
+
+默认使用自然段落。只有原文本身是分类或流程结构，且你要求结构化输出时，才使用少量列表。
+
+---
+
+## 它怎么工作
+
+1. **锁定原文**：确认原文可得、版本可定、边界可定；缺原文就请求原文。
+2. **确认知识基础**：零基础 / 学过相关课程 / 本专业读者，用来调整术语解释密度。
+3. **判定文本类型**：论证、定义、分类、过程、比较、机制、叙事、描述/说明；混合类型以主导类型为主。
+4. **建立覆盖台账**：把原文的主要标题块或段落功能映射到输出环节，防止漏掉论证、图表、公式或注释。
+5. **重建与保真**：区分原文主张、直接引用、隐含推理和外部补充；逻辑补全必须标为推断。
+6. **交付门**：边界、覆盖、保真、术语、篇幅、版权全部通过后，才输出最终结果。
+
+详细规则在 [SKILL.md](SKILL.md)；各文本类型的骨架和例子在 [references/text-types.md](references/text-types.md)，保真与引用规则在 [references/fidelity.md](references/fidelity.md)。
+
+---
+
+## 和普通摘要的区别
+
+| | 普通摘要 | book-section-synthesis |
+|---|---|---|
+| 目标 | 压缩信息 | 重建结构与推进 |
+| 原文 | 可能凭记忆 | 必须有原文 |
+| 推断 | 不区分 | 明确标记 |
+| 文本类型 | 一套模板 | 八类骨架 |
+| 术语 | 可能跳过 | 按知识基础解释 |
+| 输出 | 要点列表 | 4–8 段自然段落 |
+| 事实争议 | 直接下结论 | 需要外部证据 |
+
+---
 
 ## 安装
 
 ### 前置条件
 
-需要 `git`。当前仓库是私有的，所以还需要 GitHub CLI 并完成登录：
+- Codex App 或 Codex CLI，且支持 skills；
+- Python 3.9+（用于官方 `skill-installer` 脚本）；
+- 如果仓库还是私有的，需要先完成 GitHub 登录：
 
 ```bash
 brew install gh
@@ -29,11 +236,31 @@ gh auth setup-git
 
 非 macOS 请用对应包管理器安装 `gh`，例如 `sudo apt install gh` 或 `winget install GitHub.cli`。
 
-仓库改成公开后，可以只用 `git clone`，不需要 `gh`。
+### Codex 推荐：官方 skill-installer
 
-### Codex
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo liujieranjerry-lgtm/book-section-synthesis \
+  --path . \
+  --name book-section-synthesis \
+  --method git
+```
 
-私有仓库：克隆到 Codex skills 目录。
+安装后重启 Codex。
+
+### 跨 agent：npx skills
+
+如果使用 Claude Code、Cursor、Cline 等支持 Agent Skills 的 agent，可以用 `npx skills`：
+
+```bash
+npx skills add liujieranjerry-lgtm/book-section-synthesis --global
+```
+
+需要 Node.js，并已配置 Git 凭据；私有仓库依赖你本机已有的 GitHub 登录。`--global` 表示安装到用户级 skills 目录；不加时安装到当前项目。
+
+### 手动安装
+
+Codex：
 
 ```bash
 SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
@@ -41,7 +268,7 @@ mkdir -p "$(dirname "$SKILL_DIR")"
 gh repo clone liujieranjerry-lgtm/book-section-synthesis "$SKILL_DIR"
 ```
 
-仓库公开后，改用：
+仓库公开后，可以改用：
 
 ```bash
 SKILL_DIR="${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
@@ -49,27 +276,7 @@ mkdir -p "$(dirname "$SKILL_DIR")"
 git clone https://github.com/liujieranjerry-lgtm/book-section-synthesis.git "$SKILL_DIR"
 ```
 
-验证安装：
-
-```bash
-test -f "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis/SKILL.md" && echo "installed"
-```
-
-更新到最新版本：
-
-```bash
-git -C "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis" pull --ff-only
-```
-
-卸载：
-
-```bash
-rm -rf "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
-```
-
-### 其他支持 SKILL.md 的 agent
-
-把仓库克隆到对应 agent 的 skills 目录。例如 Claude Code：
+其他 agent：
 
 ```bash
 SKILL_DIR="$HOME/.claude/skills/book-section-synthesis"
@@ -77,147 +284,137 @@ mkdir -p "$(dirname "$SKILL_DIR")"
 gh repo clone liujieranjerry-lgtm/book-section-synthesis "$SKILL_DIR"
 ```
 
+具体 skills 目录以对应 agent 的文档为准。
+
 通用形式：
 
 ```bash
 gh repo clone liujieranjerry-lgtm/book-section-synthesis "/path/to/your/skills/book-section-synthesis"
 ```
 
-`agents/openai.yaml` 是 Codex 的界面元数据，其他宿主可以忽略；核心行为定义在 `SKILL.md` 和 `references/` 中。
+### 验证、更新、卸载
 
-## 使用
+```bash
+# 验证
+test -f "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis/SKILL.md" && echo "installed"
 
-显式调用：
+# 更新
+git -C "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis" pull --ff-only
 
-```text
-$book-section-synthesis 梳理这一小节。原文如下：……
+# 卸载
+rm -rf "${CODEX_HOME:-$HOME/.codex}/skills/book-section-synthesis"
 ```
 
-或者用自然语言：“使用 book-section-synthesis 梳理这一小节。原文如下：……”
+`agents/openai.yaml` 是 Codex 的界面元数据，其他宿主可以忽略；核心行为定义在 `SKILL.md` 和 `references/` 中。
 
-或者让 agent 自动发现。skill 在开始前会确认：
+---
 
-1. 原文是否可得；
-2. 版本和边界是否明确；
-3. 你希望按什么知识基础解释（零基础 / 学过相关课程 / 本专业读者）。
+## 仓库结构
 
-如果原文缺失，它只会要求你提供原文，不会先写一段猜测。
+```text
+book-section-synthesis/
+├── SKILL.md                    # 模型执行入口：流程、模式、交付门
+├── agents/
+│   └── openai.yaml              # Codex UI 元数据（可选）
+├── references/
+│   ├── text-types.md            # 八类文本类型与骨架
+│   ├── fidelity.md              # 四类陈述、引用规则、错误分类
+│   └── examples/                # 合成示例、完整输出、反例
+├── README.md                    # 人类阅读的仓库说明（本文件）
+├── evals/                       # 行为评测用例与评分表
+├── scripts/
+│   └── validate.py              # 结构校验
+├── requirements-dev.txt         # 开发依赖
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── LICENSE
+└── .github/                     # CI 与 PR 模板
+```
 
-## 三种模式
+运行 skill 需要的是 `SKILL.md` 和 `references/`；`agents/openai.yaml` 是 Codex 的界面元数据。其余文件用于开发、评测和发布。
 
-| 模式 | 用途 | 对外部知识的态度 |
-|---|---|---|
-| A. 忠实梳理（默认） | 重建原文结构与推进 | 不加入外部背景 |
-| B. 讲解增强 | 在 A 的基础上补充背景、著作说明或思想谱系 | 外部内容必须标为“补充背景（非本小节原文）” |
-| C. 文本审校 | 回答“这里是不是说错了”“前后是否矛盾” | 内部矛盾可直接判断；事实争议需要外部证据 |
+---
 
-## 输出约定
+## FAQ
 
-- 标准模式（默认）：4–8 个正文自然段。
-- 紧凑模式：用户说“短一点”“不用太长”时，2–4 段。
-- 详版：用户明确要求“详细/完整”，或原文包含多个必须展开的并列结构时可超过 8 段。
-- 边界说明和补充说明不计入正文段落数。
-- 默认使用自然段落；只有原文本身是分类或流程结构，且用户要求结构化输出时才使用少量列表。
+**没有原文可以用吗？**
 
-## 质量保证
+不可以。它会先要求你提供原文，不会凭书名、目录或模型记忆代写。
 
-交付前必须通过以下检查：
+**可以总结整章或整本书吗？**
 
-- 没有原文时拒答并请求原文；
-- 边界正确，没有混入下一小节；
-- 原文主要结构推进全部进入梳理；
-- 没有无来源主张，外部补充已标注；
-- 隐含推理使用“可以理解为”等标记；
-- 术语解释匹配用户的知识基础；
-- 篇幅符合所选模式；
-- 没有长段逐字复制，输出不能替代原文；
-- 无法核实或无法辨认的内容单独说明。
+不适合。这个 skill 只做指定小节的脉络梳理；整章或整本书请使用总结或阅读笔记类工具。
 
-详细规则见 [references/fidelity.md](references/fidelity.md)。
+**扫描件或图片可以吗？**
 
-## 文本类型
+可以，但需要 OCR 或足够清晰的图片。无法辨认的内容会标为 `[无法辨认]`，不会根据上下文补写。
 
-这个 skill 不会把所有小节都当成论证文。它会先判断主导类型，再选择骨架：
+**可以判断作者是不是说错了吗？**
 
-- 论证型：问题 → 主张 → 理由 → 反驳/限定 → 结论
-- 定义型：术语 → 界定 → 区分 → 例子 → 边界
-- 分类型：分类目的 → 标准 → 类别 → 比较
-- 过程型：目标 → 阶段 → 条件 → 结果
-- 比较型：比较维度 → 异同 → 结论
-- 机制型：现象 → 结构 → 机制 → 证据 → 限制
-- 叙事型：背景 → 转折 → 结果 → 意义
-- 描述/说明型：对象 → 特征 → 关系 → 例证
+- 内部矛盾、指代错误：可以依据本小节直接判断；
+- 翻译或编辑问题：有原文时对照判断，没有原文时只能说明译文层面的异常；
+- 事实争议：需要外部来源；没有外部来源时会写“需要外部核实”。
 
-混合类型以主导类型为主；无法判断时按原文自身的标题和段落功能组织。详细规则见 [references/text-types.md](references/text-types.md)。
+**会解释术语吗？**
 
-## 示例与评测
+会，解释密度按你提供的知识基础调整。默认按“能读懂该书、但不是该领域专家”处理。
 
-- 完整输入—输出示例：[references/examples/expected-output.md](references/examples/expected-output.md)
-- 常见错误对照：[references/examples/anti-example.md](references/examples/anti-example.md)
-- 评测用例：[evals/fixtures/cases.md](evals/fixtures/cases.md)
-- 评分表：[evals/rubric.md](evals/rubric.md)
+**会大段复制原文吗？**
 
-`scripts/validate.py` 只检查结构；行为需要通过前向测试验证。前向测试流程见 [evals/README.md](evals/README.md)。
+不会。引文简短、必要并标注；输出不能替代原文。
 
-## 本地开发
+**支持 Claude Code 或其他 agent 吗？**
 
-需要 Python 3.9+。先安装开发依赖，再运行结构校验：
+支持。把仓库克隆到对应 agent 的 skills 目录即可；`agents/openai.yaml` 是 Codex 的可选界面元数据。
+
+**默认输出多长？**
+
+标准模式 4–8 个正文自然段；说“短一点”时 2–4 段；明确要求详细时才超过 8 段。
+
+**为什么安装后要重启 Codex？**
+
+Codex 在启动时加载 skill 元数据；重启后才会发现新安装的 skill。
+
+**需要联网吗？**
+
+核心梳理只需要你提供的原文。只有当你要补充外部背景或核查事实时，才需要外部来源。
+
+---
+
+## 限制与路线图
+
+**限制**：
+
+- 不能替代外部事实核查；没有外部来源时会明确标注“需要外部核实”；
+- OCR 和扫描件质量会影响覆盖范围；
+- 行为会受模型版本影响，发布前应跑行为评测基线；
+- 不适用于整章总结、文献综述、逐句翻译或论文写作；
+- 不做法律、医学、金融等专业结论，只梳理原文。
+
+**路线图**：
+
+- 跑跨模型行为评测，补充 `evals/results/baseline.md`；
+- 增加定义型、分类型、机制型、定理—证明型的评测 fixture；
+- 增加 Claude Code 和其他宿主兼容性测试；
+- 建立正式的版本 tag 与 release 流程。
+
+---
+
+## 开发与贡献
+
+本地校验：
 
 ```bash
 python -m pip install -r requirements-dev.txt
 python scripts/validate.py .
 ```
 
-`requirements-dev.txt` 当前只声明 PyYAML；校验脚本在缺少它时会给出安装提示。
-
-## 仓库结构
-
-```text
-book-section-synthesis/
-├── SKILL.md
-├── README.md
-├── LICENSE
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── agents/
-│   └── openai.yaml
-├── references/
-│   ├── text-types.md
-│   ├── fidelity.md
-│   └── examples/
-├── evals/
-│   ├── README.md
-│   ├── rubric.md
-│   └── fixtures/
-├── scripts/
-│   └── validate.py
-├── requirements-dev.txt
-└── .github/workflows/validate.yml
-```
-
-## 贡献
-
 行为变更必须同时更新 `evals/fixtures/cases.md` 或新增 fixture，并说明评分影响。不要提交受版权保护的教材节选；示例使用合成材料或公共领域文本。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-## 版权与隐私
+评测用例和评分表见 [evals/fixtures/cases.md](evals/fixtures/cases.md) 和 [evals/rubric.md](evals/rubric.md)。
 
-- 这个 skill 只做转述和结构重建，输出不能替代原文。
-- 引用要简短、必要，并说明作用；不要大段逐字复制。
-- 用户提供的教材、论文或未出版材料可能包含敏感信息；未经用户同意，不要上传到第三方服务。
-- 开源仓库中的示例和评测材料应当是合成的或公共领域的。
-
-## 已验证模型
-
-发布前在这里记录实际跑过评测的模型、版本和日期：
-
-```text
-model:
-version:
-date:
-rubric score:
-notes:
-```
+---
 
 ## License
 
-MIT，见 [LICENSE](LICENSE)。
+MIT License，见 [LICENSE](LICENSE)。
