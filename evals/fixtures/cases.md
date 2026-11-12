@@ -6,6 +6,7 @@
 - 评分见 [rubric.md](../rubric.md)；「评分重点」里的维度名与 rubric 一致。
 - 材料一律为合成材料，或对 [chapter-synthetic-input.md](../../skill/book-section-synthesis/references/examples/chapter-synthetic-input.md)（第 8 章，7 节）的截取。不得替换为任何真实教材内容。
 - 标「轮 1／轮 2／轮 3」的用例是同一材料下的多次运行，分别记分；任一轮命中硬线 0 分，该用例不通过。
+- 全部字数按**去标点**口径核（中文字符、数字、外文按字符各计 1）；用例里出现的字数、区间、硬上限都是这个口径下的值。
 
 ## 覆盖对照
 
