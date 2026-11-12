@@ -2,7 +2,7 @@
 
 > 把教材或学术著作中的**一整章**，重写成一份忠于原文、逻辑连贯、可以直接放进笔记的中文「脉络梳理」。
 
-![version](https://img.shields.io/badge/version-3.0.0-blue)
+![version](https://img.shields.io/badge/version-3.0.1-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![Codex Skill](https://img.shields.io/badge/Codex-Skill-10a37f)
 ![language](https://img.shields.io/badge/language-中文-red)
@@ -227,12 +227,16 @@ cp -R /tmp/bss/skill/book-section-synthesis "${CODEX_HOME:-$HOME/.codex}/skills/
 ├── README.md                 本文件
 ├── QUICK_PROMPTS.md          可直接复制的提示词
 ├── CHANGELOG.md              版本记录
-├── CONTRIBUTING.md           贡献指南
-├── requirements-dev.txt      本地校验依赖（PyYAML）
+├── CONTRIBUTING.md           贡献指南（给人读）
+├── AGENTS.md                 贡献指南（给在本仓库工作的 agent 读）
+├── SECURITY.md               威胁模型与为此做的控制
+├── .claude-plugin/           Claude Code 插件清单与市场清单
+├── .github/workflows/        validate（每次推送）+ release（打 tag）
 ├── evals/                    评测：用例、评分量表、前向测试流程
 ├── scripts/
-│   ├── validate.py           仓库结构与 skill frontmatter 校验
-│   └── check_links.py        本地 Markdown 链接校验
+│   ├── validate.py           结构、版本一致性、清单、skill frontmatter
+│   ├── check_links.py        本地 Markdown 链接与锚点
+│   └── release_notes.py      从 CHANGELOG 抽某版本的 Release notes
 └── skill/book-section-synthesis/
     ├── SKILL.md              规则全文
     ├── agents/openai.yaml    界面元数据
@@ -242,7 +246,9 @@ cp -R /tmp/bss/skill/book-section-synthesis "${CODEX_HOME:-$HOME/.codex}/skills/
         └── examples/         合成输入、完整产出、失败反例、配图
 ```
 
-运行文件集中在 `skill/book-section-synthesis/`，仓库根目录只放文档与脚本，这样既能被 `skill-installer` 按目录安装，也能直接在 GitHub 上读。
+运行文件集中在 `skill/book-section-synthesis/`，仓库根目录只放文档与脚本。这样既能被 `skill-installer` 按目录安装，也能直接当 Claude Code 插件装（`.claude-plugin/plugin.json` 把 `skills` 指向同一个目录），在 GitHub 上读起来也不绕。
+
+版本号只有一个来源：`SKILL.md` 的 `metadata.version`。`CHANGELOG.md` 最新一段、`plugin.json` 的 `version`、上面那个 badge，三处都由 `scripts/validate.py` 强制对齐，对不上 CI 直接失败。
 
 ---
 
@@ -311,13 +317,13 @@ cp -R /tmp/bss/skill/book-section-synthesis "${CODEX_HOME:-$HOME/.codex}/skills/
 ```bash
 git clone https://github.com/liujieranjerry-lgtm/book-section-synthesis.git
 cd book-section-synthesis
-python3 -m venv .venv && . .venv/bin/activate
-pip install -r requirements-dev.txt
-python scripts/validate.py .
-python scripts/check_links.py .
+python3 scripts/validate.py .
+python3 scripts/check_links.py .
 ```
 
-改动规则前请先看 [CONTRIBUTING.md](CONTRIBUTING.md)：行为变更必须配一条新用例，否则下一次改规则就会把旧约定吹掉。
+不用装任何依赖：两个脚本只用标准库，CI 里也没有包安装这一步。
+
+改动规则前请先看 [AGENTS.md](AGENTS.md) 与 [CONTRIBUTING.md](CONTRIBUTING.md)：前者是「改这里必须同步改那里」的对照表，后者是行为变更的验收要求。行为变更必须配一条新用例，否则下一次改规则就会把旧约定吹掉。
 
 ---
 

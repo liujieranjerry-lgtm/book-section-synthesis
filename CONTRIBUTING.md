@@ -4,8 +4,11 @@
 
 ## 仓库布局
 
-- `skill/book-section-synthesis/`：真正安装到 Codex 的运行文件（`SKILL.md`、`agents/`、`references/` 及其 `examples/`）。
-- 根目录的 `README.md`、`QUICK_PROMPTS.md`、`evals/`、`scripts/`、`.github/`：仓库文档、评测和开发工具。
+- `skill/book-section-synthesis/`：真正安装到 agent 的运行文件（`SKILL.md`、`agents/`、`references/` 及其 `examples/`）。`~/.codex/skills/` 或 `~/.dsh/skills/` 下装的就是这一个目录。
+- `.claude-plugin/`：把同一个目录登记成 Claude Code 插件与自建市场，路径指向 `skill/book-section-synthesis/`。
+- 根目录的 `README.md`、`QUICK_PROMPTS.md`、`AGENTS.md`、`SECURITY.md`、`evals/`、`scripts/`、`.github/`：仓库文档、评测和开发工具，不会被安装进 skill 目录。
+
+改动的同步关系（改 A 要一起改 B）写死在 [AGENTS.md](AGENTS.md) 里，先读那张表再动手。
 
 ## 行为变更
 
@@ -31,20 +34,23 @@
 
 ## 本地检查
 
-需要 Python 3.9+。先安装开发依赖：
+需要 Python 3.10+，不需要安装任何依赖：
 
 ```bash
-python -m pip install -r requirements-dev.txt
-python scripts/validate.py .
-python scripts/check_links.py .
+python3 scripts/validate.py .
+python3 scripts/check_links.py .
 ```
 
-这两个脚本只检查结构、命名和本地 Markdown 链接，不验证行为；行为验证按 [evals/README.md](evals/README.md) 进行。缺少 PyYAML 时，脚本会提示你运行上面的安装命令。
+`validate.py` 检查结构、命名、版本一致性（`SKILL.md` / `CHANGELOG.md` / `plugin.json` / README badge 四处必须相等）、README 目录与正文标题一一对应、`SKILL.md` 引用的参考文件存在、交付门编号连续。`check_links.py` 检查本地 Markdown 链接的文件与锚点。两个脚本都不验证行为；行为验证按 [evals/README.md](evals/README.md) 进行。
 
-如果本机安装了 Codex skill-creator，也可以额外运行：
+改了行为还要在 PR 里说明版本档位（主／次／补丁），并让 `CHANGELOG.md` 的 `[Unreleased]` 段跟上——版本号对不上时 CI 会失败。
+
+如果本机装了这些工具，可以额外跑（CI 不跑，避免在 CI 里安装第三方包）：
 
 ```bash
-python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .
+claude plugin validate .claude-plugin/plugin.json --strict
+claude plugin validate .claude-plugin/marketplace.json --strict
+python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py .
 ```
 
 ## Pull Request 清单

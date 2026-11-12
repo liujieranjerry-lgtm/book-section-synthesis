@@ -1,0 +1,54 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: "3.12"
+      - name: 发布前仍在一致性检查之内
+        run: |
+          python3 scripts/validate.py .
+          python3 scripts/check_links.py .
+      - name: tag 必须等于 SKILL.md 的版本
+        run: |
+          python3 - "$GITHUB_REF_NAME" <<'PY'
+          import re, sys
+          from pathlib import Path
+
+          tag = sys.argv[1]
+          version = tag[1:] if tag.startswith("v") else tag
+          text = Path("skill/book-section-synthesis/SKILL.md").read_text(encoding="utf-8")
+          match = re.search(r'^\s+version:\s*"?(\d+\.\d+\.\d+)"?\s*$', text, re.MULTILINE)
+          if not match:
+              sys.exit("SKILL.md metadata.version not found")
+          if match.group(1) != version:
+              sys.exit(f"tag {tag} does not match SKILL.md version {match.group(1)}")
+          print(f"tag {tag} matches SKILL.md version {version}")
+          PY
+      - name: 从 CHANGELOG 取 release notes
+        run: python3 scripts/release_notes.py "$GITHUB_REF_NAME" > release-notes.md
+      - name: 创建 Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release-notes.md \
+            --verify-tag

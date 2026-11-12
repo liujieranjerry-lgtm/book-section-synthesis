@@ -4,6 +4,28 @@
 
 ## [Unreleased]
 
+## [3.0.1] - 2026-11-12
+
+规则文本没有变化，产出形状不变。这一版改的是仓库本身的可靠性：能被 `claude plugin validate` 认出来，版本号不再靠人记，脚本不再依赖第三方包。
+
+### Added
+
+- `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json`：现在可以作为 Claude Code 插件安装，`/plugin marketplace add liujieranjerry-lgtm/book-section-synthesis` 后即可启用。
+- `.github/workflows/release.yml`：打 `vX.Y.Z` tag 触发；先校验 tag 与 `SKILL.md` 的版本一致，再从 `CHANGELOG.md` 抽取对应小节作为 Release notes。不一致时失败，不会发出 Release。
+- `scripts/release_notes.py`：本地也能用同一条命令预览某版本的 Release notes。
+- `AGENTS.md`：给在本仓库工作的 agent 的「改这里必须同步改那里」对照表、验证顺序、版本三档判定与硬性禁止。
+- `SECURITY.md`：威胁模型（指令注入、供应链、评测数据、用户材料外泄）与为此做的控制。
+
+### Changed
+
+- `scripts/validate.py` 改为纯标准库，不再依赖 PyYAML。新增检查：版本号四处一致（`SKILL.md` / `CHANGELOG.md` 最新段 / `plugin.json` / README badge）、`plugin.json` 的 `description` 与 frontmatter 逐字一致、README 目录与正文二级标题一一对应、`SKILL.md` 引用的参考文件都存在、交付门编号 1–N 连续、`SKILL.md` 正文不超过 10,000 字符、市场清单条目不得重复声明组件字段。
+- `scripts/check_links.py` 增加锚点校验：带 `#片段` 的链接必须能对上目标文件里某个标题生成的锚点。
+- 全部 GitHub Actions 固定到 commit SHA（不再用浮动 `@v7`），workflow 顶层 `permissions: contents: read`，`checkout` 关闭 `persist-credentials`，CI 不再安装任何依赖。
+
+### Removed
+
+- `requirements-dev.txt`：校验脚本不再需要第三方依赖，CI 里也就没有包安装这一步。
+
 ## [3.0.0] - 2026-11-12
 
 范围变更：从「一个小节」改为「一整章」。旧版按小节设计的模式、骨架、篇幅表全部作废。

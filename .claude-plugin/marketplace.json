@@ -1,0 +1,20 @@
+{
+  "name": "book-section-synthesis",
+  "description": "课本整章梳理 skill 的自建市场：一个把教材或学术著作整章重写为中文脉络梳理的 Agent Skill。",
+  "owner": {
+    "name": "liujieranjerry-lgtm",
+    "url": "https://github.com/liujieranjerry-lgtm"
+  },
+  "plugins": [
+    {
+      "name": "book-section-synthesis",
+      "source": "./",
+      "category": "writing",
+      "tags": [
+        "textbook",
+        "chapter",
+        "reading-notes"
+      ]
+    }
+  ]
+}
