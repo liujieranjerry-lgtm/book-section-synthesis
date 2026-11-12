@@ -4,16 +4,42 @@
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-11-12
+
+范围变更：从「一个小节」改为「一整章」。旧版按小节设计的模式、骨架、篇幅表全部作废。
+
+### Breaking
+
+- 只做整章。只给一个小节时，按同一流程把该小节当作「章」处理，其中的自然子标题当作「节」。
+- 模式改为 ① 对原文的梳理 ② 梳理＋词语阐释 ③ 精简版梳理；原 A/B/C（忠实梳理／讲解增强／文本审校）不再作为模式，文本审校降为第 5 问的可选附加。
+- 篇幅主轴从「正文自然段数」改为「每节字数」；`4–8 段 / 2–4 段 / 超 8 段` 与档位表作废。
+- 节层八类骨架作废，改为章层四类（论证型／综述型／史论型／导论型），只判章、不判节。
+- 移除 `templates/section-note.md` 与「保真说明」节；新增「存疑项」（最多三行，没有的类别省略、不写「无」）。
+
 ### Added
 
+- 开始前的五个问题（读者基础／模式／档位／补充背景／文本审校），一次性问完；模式③ 跳过档位问。
+- 读者四档与对应解释策略；读者档位决定每条术语解释写多细，模式决定收哪些词。
+- 可选的外部背景通道 `〔补充背景〕……〔/补充背景〕`，默认关闭，每章不超过 5 处。
+- 章层三类新增结构：全章主线（每句带强制关系，判据是删掉全部节号后仍读得通）、全章收束（立场地图／代价对称性／未解决问题）、逐节梳理（严格按原文顺序）。
+- 字数推导规则：正文 = 每节区间 × 节数 + 章级固定件；章节长短悬殊时（最长 ÷ 最短 > 1.75）按原文篇幅占比分配。
+- 全章正文硬上限 12,000 字与降级顺序（术语注 → 补充背景 → 正文 → 降档）；术语注不计入上限。
+- 章末附属部分按**名称**识别（Notes／Further Reading／练习／索引），不按标题层级；每类给默认处理方式。
+- 图表默认从源文件裁切嵌入 `assets/`；无裁图工具时退化为一句描述并在存疑项记「图 X.X 未嵌图」。
+- `*诠释*：` 标注规范（斜体只包「诠释」二字）与密度上限（每节 ≤4 处）。
+- 交付门 10 项，可直接逐条检查。
+- 新增 `references/examples/chapter-{synthetic-input,expected-output,anti-example}.md` 与配图 `assets/ch08-fig8-1.png`（合成材料，第 8 章 7 节）。
 - `scripts/check_links.py`，检查 Markdown 本地链接。
 - `.github/dependabot.yml`，每周检查 GitHub Actions 更新。
 
 ### Changed
 
+- `README.md` 按整章重写；`QUICK_PROMPTS.md` 提示词全部重写（14 条）。
+- `evals/rubric.md`、`evals/fixtures/cases.md`、`evals/README.md` 按 v3 交付门重写。
+- `scripts/validate.py` 必需文件列表去掉 `templates/section-note.md`，加入三份 examples。
 - CI 升级到 `actions/checkout@v7` 和 `actions/setup-python@v7`，增加链接检查步骤和并发取消。
-- `scripts/validate.py` 必需文件列表加入 `scripts/check_links.py`。
-- CONTRIBUTING 与 README 的本地校验说明同步更新。
+- `agents/openai.yaml` 改为「课本整章梳理」。
+- `SKILL.md` 版本改为 3.0.0，description 不再排除整章请求。
 
 ## [2.2.0] - 2026-09-22
 

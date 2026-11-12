@@ -1,10 +1,10 @@
 # Contributing
 
-感谢参与。这个项目的核心质量目标是**可预测**：不同模型、不同用户、不同小节，应该走出同一套可靠流程。
+感谢参与。这个项目的核心质量目标是**可预测**：不同模型、不同用户、不同章节，应该走出同一套可靠流程。
 
 ## 仓库布局
 
-- `skill/book-section-synthesis/`：真正安装到 Codex 的运行文件（`SKILL.md`、`agents/`、`references/`、`templates/`）。
+- `skill/book-section-synthesis/`：真正安装到 Codex 的运行文件（`SKILL.md`、`agents/`、`references/` 及其 `examples/`）。
 - 根目录的 `README.md`、`QUICK_PROMPTS.md`、`evals/`、`scripts/`、`.github/`：仓库文档、评测和开发工具。
 
 ## 行为变更
@@ -24,7 +24,8 @@
 
 - `skill/book-section-synthesis/SKILL.md` 保持精简；类型细节、示例和错误对照放到 `skill/book-section-synthesis/references/`。
 - 默认中文写作；术语保留原文，不强行给英文对应词。
-- 规则要可检查：写“4–8 个正文自然段”，不要写“篇幅适中”。
+- 规则要可检查：写“每节 250–350 字、主线 250–350 字”，不要写“篇幅适中”。
+- 规则只判章，不判节；需要分节处理的规则，写成由档位和原文自身结构决定。
 - 一个规则只在一个地方定义；引用时用链接，不要复制整段。
 - 不要加入模型默认就会遵守的空泛建议。
 

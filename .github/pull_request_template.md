@@ -14,6 +14,7 @@
 ## Validation
 
 - [ ] `python scripts/validate.py .` passes.
+- [ ] `python scripts/check_links.py .` passes.
 - [ ] I recorded the model, version, and date used for any behavioral check.
 
 Model / version / date:

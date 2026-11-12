@@ -1,4 +1,4 @@
 interface:
-  display_name: "课本小节梳理"
-  short_description: "把用户提供的教材或学术著作小节重写为忠实、连贯的中文脉络梳理"
-  default_prompt: "梳理这一小节，不要照本宣科；先确认我提供的原文和知识基础，再解释术语和隐含逻辑"
+  display_name: "课本整章梳理"
+  short_description: "把用户提供的教材或学术著作整章重写为忠实、连贯的中文脉络梳理"
+  default_prompt: "梳理这一章，不要照本宣科；先确认原文与边界，再问我读者基础、模式、档位、要不要补充背景、要不要顺带审校"

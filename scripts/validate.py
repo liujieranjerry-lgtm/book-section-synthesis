@@ -42,7 +42,9 @@ REQUIRED_SKILL_FILES = (
     "agents/openai.yaml",
     "references/text-types.md",
     "references/fidelity.md",
-    "templates/section-note.md",
+    "references/examples/chapter-synthetic-input.md",
+    "references/examples/chapter-expected-output.md",
+    "references/examples/chapter-anti-example.md",
 )
 
 
