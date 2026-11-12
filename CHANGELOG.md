@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- `validate` workflow 只在 `main` 的 push 与 pull request 上触发：同一分支不再因为 push 与 pull_request 各跑一遍；tag 只由 `release` workflow 负责。
+
 ## [3.0.1] - 2026-11-12
 
 规则文本没有变化，产出形状不变。这一版改的是仓库本身的可靠性：能被 `claude plugin validate` 认出来，版本号不再靠人记，脚本不再依赖第三方包。
