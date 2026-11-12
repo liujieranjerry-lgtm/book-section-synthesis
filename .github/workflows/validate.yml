@@ -1,7 +1,10 @@
 name: validate
 
 on:
+  # PR 走 pull_request；只有合进 main 的提交再跑一次 push，避免同一分支上双跑。
+  # tag 由 release workflow 负责，它自己会先跑同一套校验。
   push:
+    branches: [main]
   pull_request:
 
 permissions:
