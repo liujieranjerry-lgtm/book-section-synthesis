@@ -36,6 +36,14 @@
 
 发布流程：改 `CHANGELOG.md` → 提交 → 在 GitHub 上打 `vX.Y.Z` tag → `release` workflow 校验 tag 与 `SKILL.md` 的版本一致后，用 `CHANGELOG.md` 对应小节生成 Release notes。tag 与版本号不一致时 workflow 失败，不会发出 Release。
 
+`main` 受仓库规则集保护，对管理员同样生效：
+
+- 只能经 pull request 合并，不能直接 push；
+- 合并前 `validate` 必须通过，且分支要与 `main` 同步；
+- 禁止强推、禁止删除分支；错误用新的提交 `git revert` 修，不改历史。
+
+发布 tag 不受这条限制，但 tag 指向的提交必须已经在 `main` 上。出问题时要回滚规则集本身，用 `gh api -X DELETE repos/<owner>/<repo>/rulesets/<id>`——规则集不保护它自己，这是唯一的出口，别把它当常规手段。
+
 ## 四、硬性禁止
 
 - 不提交教材、论文或任何受版权保护的原文片段。`references/examples/` 里的材料全部是合成的。
