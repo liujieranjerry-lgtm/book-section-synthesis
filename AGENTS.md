@@ -11,7 +11,8 @@
 | `SKILL.md` 的规则语义 | `CHANGELOG.md` 新增一段、`SKILL.md` 的 `metadata.version`、`.claude-plugin/plugin.json` 的 `version`、`README.md` 的 version badge |
 | `references/` 增删文件 | `SKILL.md` 的「参考文件」清单、`scripts/validate.py` 的 `REQUIRED_SKILL_FILES` |
 | 字数表、输出结构、标注规范 | `references/examples/chapter-expected-output.md`（必须重算字数）、`README.md` 的「效果示例」引文、`evals/fixtures/cases.md`、`evals/rubric.md` |
-| 交付门条目 | `evals/rubric.md` 的评分维度与三条硬线（编号必须对得上） |
+| 交付门条目 | `evals/rubric.md` 的评分维度与三条硬线（编号必须对得上）、`chapter-anti-example.md` 里「卡在交付门第 N 项」的编号 |
+| 逐节的接口句规则（入口句／出口句） | `chapter-expected-output.md` 每节开头与结尾、`README.md` 效果示例的三段引文、`evals/` 的衔接维度与 case 18 |
 | 安装方式、仓库布局 | `README.md` 的安装段与仓库结构段、`.claude-plugin/plugin.json` 的 `skills` 路径 |
 | 增删仓库顶层的任何文件 | `scripts/validate.py` 的 `REQUIRED_REPO_FILES` |
 
